@@ -1,0 +1,81 @@
+{
+  "$comment": "Mechanical checks for `write-like-a-human lint`. Edit freely. Turn any rule off by adding its id to `disabled`. Regex rules default to case-insensitive.",
+  "disabled": [],
+  "rules": [
+    {
+      "id": "em-dash",
+      "kind": "regex",
+      "pattern": "\u2014|\\s--\\s",
+      "message": "Em-dash. Use a period, a comma, or a spaced hyphen.",
+      "severity": "error"
+    },
+    {
+      "id": "ai-vocabulary",
+      "kind": "words",
+      "words": ["leverage", "robust", "seamless", "streamline", "delve", "utilize", "synergy", "tapestry", "holistic", "cutting-edge", "game-changer", "best-in-class", "unlock", "empower", "elevate", "foster", "ever-evolving", "paradigm", "testament"],
+      "message": "Generic AI vocabulary. Say what actually happens.",
+      "severity": "error"
+    },
+    {
+      "id": "empty-intensifier",
+      "kind": "words",
+      "words": ["truly", "incredibly", "genuinely", "profoundly", "deeply passionate", "passionate about"],
+      "message": "Intensifier with no particular behind it. Cut it or replace it with the fact.",
+      "severity": "warn"
+    },
+    {
+      "id": "contrastive-not-but",
+      "kind": "regex",
+      "pattern": "\\bnot\\s+(?:just\\s+|only\\s+|merely\\s+|simply\\s+)?[^.!?;:,\\n]{1,60}?,?\\s+but\\s+",
+      "message": "\"not X, but Y\" scaffolding. State the positive claim and stop.",
+      "severity": "error"
+    },
+    {
+      "id": "contrastive-not-its",
+      "kind": "regex",
+      "pattern": "\\b(?:not|isn't|isn\u2019t|aren't|aren\u2019t|wasn't|wasn\u2019t|weren't|weren\u2019t)\\b[^.!?;\\n]{0,60}?[,;.]\\s+(?:it|this|that|they)(?:'s|\u2019s|\\s+is|\\s+are|\\s+was|\\s+were)\\b",
+      "message": "\"not X, it's Y\" scaffolding. State the positive claim and stop.",
+      "severity": "error"
+    },
+    {
+      "id": "contrastive-soft",
+      "kind": "regex",
+      "pattern": "\\b(?:rather than|instead of)\\b",
+      "message": "Contrast phrase. Check whether the positive claim stands alone.",
+      "severity": "warn"
+    },
+    {
+      "id": "throat-clearing",
+      "kind": "regex",
+      "pattern": "(?<=^|[.!?][\"’”)]?\\s+)(?:in today['\u2019]s|in a world where|in an era of|let['\u2019]s be honest|here['\u2019]s the thing|i hope this (?:email|message|note) finds you well|i wanted to reach out|i['\u2019]m reaching out|i am reaching out|it['\u2019]s no secret|it goes without saying|as we all know)\\b",
+      "flags": "im",
+      "message": "Throat-clearing opener. Start on the first sentence that carries information.",
+      "severity": "error"
+    },
+    {
+      "id": "meta-commentary",
+      "kind": "regex",
+      "pattern": "\\b(?:the real (?:problem|question|issue|challenge) (?:is|was)|the truth is|make no mistake|let me be clear|it['\u2019]s worth noting|it is worth noting|needless to say)\\b",
+      "message": "Meta-commentary. Just make the claim.",
+      "severity": "error"
+    },
+    {
+      "id": "restating-closer",
+      "kind": "regex",
+      "pattern": "(?<=^|[.!?][\"’”)]?\\s+)(?:in short|in summary|in conclusion|to sum up|ultimately|at the end of the day|all in all|the bottom line is)\\b",
+      "flags": "im",
+      "message": "Restating closer. If the point already landed, delete the sentence.",
+      "severity": "warn"
+    }
+  ],
+  "triplets": {
+    "enabled": true,
+    "severity": "warn"
+  },
+  "formats": {
+    "cover-letter": { "maxWords": 300, "targetWords": 250 },
+    "cold-email": { "maxWords": 130, "targetWords": 100 },
+    "short-post": { "maxWords": 200, "targetWords": 150 },
+    "application-answer": { "maxWords": 160, "targetWords": 140 }
+  }
+}

@@ -1,0 +1,140 @@
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { maskNonProse, mean, median, round, splitSentences, stdev, tokens } from "./text.js";
+
+export const BUCKETS = [
+  { label: "1-8", max: 8 },
+  { label: "9-15", max: 15 },
+  { label: "16-25", max: 25 },
+  { label: "26-40", max: 40 },
+  { label: "41+", max: Infinity },
+] as const;
+
+export type Profile = {
+  samples: number;
+  words: number;
+  sentences: number;
+  avgSentence: number;
+  medianSentence: number;
+  stdevSentence: number;
+  distribution: Record<string, number>;
+  topOpeners: { word: string; share: number }[];
+  punctuationPerSentence: Record<string, number>;
+  contractionsPer100Words: number;
+  firstPersonPer100Words: number;
+  oxfordCommaRate: number | null;
+  topWords: { word: string; count: number }[];
+};
+
+const STOPWORDS = new Set(
+  "a an the and or but if then so of to in on at by for with from as is are was were be been being it its it's this that these those i me my we our you your he she they them their his her not no do does did have has had will would can could should just than too very also there here what when where which who how all any some more most about into over out up down only own same such".split(
+    " ",
+  ),
+);
+
+const PUNCTUATION: Record<string, RegExp> = {
+  comma: /,/g,
+  semicolon: /;/g,
+  colon: /:/g,
+  emDash: /—|\s--\s/g,
+  spacedHyphen: /\s-\s/g,
+  parenthesis: /\(/g,
+  question: /\?/g,
+  exclamation: /!/g,
+};
+
+export const distribution = (lengths: number[]): Record<string, number> =>
+  Object.fromEntries(
+    BUCKETS.map((b, i) => {
+      const min = i === 0 ? 0 : (BUCKETS[i - 1]?.max ?? 0);
+      const n = lengths.filter((l) => l > min && l <= b.max).length;
+      return [b.label, lengths.length ? round(n / lengths.length) : 0];
+    }),
+  );
+
+const topN = <T>(counts: Map<string, number>, n: number, f: (word: string, count: number) => T): T[] =>
+  [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, n).map(([w, c]) => f(w, c));
+
+const tally = (items: string[]): Map<string, number> => items.reduce((m, w) => m.set(w, (m.get(w) ?? 0) + 1), new Map<string, number>());
+
+export const computeProfile = (texts: string[]): Profile => {
+  const prose = texts.map(maskNonProse);
+  const sentences = texts.flatMap(splitSentences);
+  const lengths = sentences.map((s) => s.words);
+  const allTokens = prose.flatMap(tokens);
+  const words = allTokens.length;
+  const joined = prose.join("\n\n");
+  const per100 = (n: number) => (words ? round((n / words) * 100) : 0);
+  const openers = tally(sentences.map((s) => tokens(s.text)[0] ?? "").filter(Boolean));
+  const oxford = (joined.match(/,\s+[\w'’-]+(?:\s+[\w'’-]+){0,3},\s+(?:and|or)\s/gi) ?? []).length;
+  const noOxford = (joined.match(/,\s+[\w'’-]+(?:\s+[\w'’-]+){0,3}\s+(?:and|or)\s/gi) ?? []).length;
+  return {
+    samples: texts.length,
+    words,
+    sentences: sentences.length,
+    avgSentence: round(mean(lengths), 1),
+    medianSentence: median(lengths),
+    stdevSentence: round(stdev(lengths), 1),
+    distribution: distribution(lengths),
+    topOpeners: topN(openers, 10, (word, c) => ({ word, share: round(c / Math.max(sentences.length, 1)) })),
+    punctuationPerSentence: Object.fromEntries(
+      Object.entries(PUNCTUATION).map(([k, re]) => [k, sentences.length ? round((joined.match(re) ?? []).length / sentences.length) : 0]),
+    ),
+    contractionsPer100Words: per100(allTokens.filter((t) => /[a-z]['’](?:s|t|re|ve|ll|d|m)$/.test(t)).length),
+    firstPersonPer100Words: per100(allTokens.filter((t) => ["i", "me", "my", "i'm", "i’m", "i've", "i’ve", "i'd", "i’d", "i'll", "i’ll"].includes(t)).length),
+    oxfordCommaRate: oxford + noOxford ? round(oxford / (oxford + noOxford)) : null,
+    topWords: topN(tally(allTokens.filter((t) => t.length > 2 && !STOPWORDS.has(t) && !/^\d+$/.test(t))), 15, (word, count) => ({ word, count })),
+  };
+};
+
+export const readSamples = (dir: string): string[] =>
+  existsSync(dir)
+    ? readdirSync(dir)
+        .filter((f) => /\.(md|txt)$/i.test(f) && f.toLowerCase() !== "readme.md")
+        .sort()
+        .map((f) => readFileSync(join(dir, f), "utf8"))
+    : [];
+
+// Total variation distance between sentence-length distributions (0 = identical, 1 = disjoint),
+// plus the absolute gap in average sentence length.
+export const sentenceDistance = (profile: Profile, text: string): { avgDelta: number; tvd: number } => {
+  const lengths = splitSentences(text).map((s) => s.words);
+  const d = distribution(lengths);
+  const tvd = 0.5 * BUCKETS.reduce((acc, b) => acc + Math.abs((profile.distribution[b.label] ?? 0) - (d[b.label] ?? 0)), 0);
+  return { avgDelta: round(Math.abs(mean(lengths) - profile.avgSentence), 1), tvd: round(tvd) };
+};
+
+export const renderProfile = (p: Profile, generatedOn: string): string => {
+  const pct = (n: number) => `${Math.round(n * 100)}%`;
+  return `# Voice Profile
+
+Generated by \`write-like-a-human profile\` on ${generatedOn} from ${p.samples} sample(s), ${p.words} words, ${p.sentences} sentences. Regenerate whenever you add samples. The skill reads this file as a fingerprint to draft against; numbers describe your habits and are not targets to hit exactly.
+
+## Sentence length
+
+- Average ${p.avgSentence} words, median ${p.medianSentence}, standard deviation ${p.stdevSentence}
+${Object.entries(p.distribution)
+  .map(([k, v]) => `- ${k} words: ${pct(v)}`)
+  .join("\n")}
+
+## How sentences open
+
+${p.topOpeners.map((o) => `- "${o.word}" ${pct(o.share)}`).join("\n") || "- not enough samples"}
+
+## Punctuation per sentence
+
+${Object.entries(p.punctuationPerSentence)
+  .map(([k, v]) => `- ${k}: ${v}`)
+  .join("\n")}
+
+## Habits
+
+- Contractions per 100 words: ${p.contractionsPer100Words}
+- First person (I, me, my) per 100 words: ${p.firstPersonPer100Words}
+- Oxford comma rate: ${p.oxfordCommaRate === null ? "no three-item lists found" : pct(p.oxfordCommaRate)}
+
+## Most used content words
+
+${p.topWords.map((w) => `- ${w.word} (${w.count})`).join("\n") || "- not enough samples"}
+`;
+};

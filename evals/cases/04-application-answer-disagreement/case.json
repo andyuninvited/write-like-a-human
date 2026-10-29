@@ -1,0 +1,4 @@
+{
+  "format": "application-answer",
+  "expected": ["meta-commentary", "ai-vocabulary:utilize", "ai-vocabulary:robust", "ai-vocabulary:foster", "contrastive-soft", "restating-closer"]
+}

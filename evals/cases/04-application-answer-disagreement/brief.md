@@ -1,0 +1,1 @@
+Application question: "Tell us about a time you disagreed with a decision. What did you do, and what happened?" The writer disagreed with launching a fictional meal-kit app's referral program before fixing delivery delays. They pulled complaint data, the launch moved by three weeks, and referral signups ended up 30 percent above forecast.

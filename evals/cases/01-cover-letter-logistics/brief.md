@@ -1,0 +1,1 @@
+Cover letter for a product manager role at Dockline, a fictional logistics startup that schedules loading-dock appointments for warehouses. The writer once cut dock wait times at a previous job with a shared schedule the crew edited from their phones (forty minutes to twelve, in two months).
