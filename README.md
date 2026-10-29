@@ -1,16 +1,62 @@
 # write-like-a-human
 
-Make AI write in your voice, and get better every time you fix a draft.
+**Still fighting to get Claude to sound like a human? To sound like you?**
 
-write-like-a-human is a Claude Code skill plus a small CLI. The skill drafts from your own writing samples and rules. When you rewrite a draft, it diffs your version against its own, names what you changed, and turns repeated changes into rules. The CLI enforces those rules mechanically and measures whether they still catch what you cut.
+Tired of `delve`, `game-changer`, and an em-dash in every other sentence? Of "this, not that" framing, three examples where one would do, and a closing paragraph that repeats the opening one? Of asking for a three-line email and getting four paragraphs that open with "I hope this finds you well"?
 
-MIT licensed. By Andy Rosic.
+Most of all, are you tired of fixing the same tell for the fortieth time because the model forgot your last correction?
 
-## The problem
+write-like-a-human learns from the signal most AI writing tools throw away, which is your edits. Every time you rewrite a draft, it compares your version to its own and turns the changes you keep making into rules. Then it checks the next draft against those rules before you ever see it.
 
-AI drafts read like AI drafts. They pad for completeness, stack three examples where one would do, open by clearing their throat, and close by restating the point. They also sound like nobody in particular.
+It's a Claude Code skill plus a small CLI, MIT licensed. It runs locally, so nothing leaves your machine.
 
-Style prompts help for a day. The fix that lasts is a loop: your edits are the ground truth, and every edit you make teaches the system something specific. write-like-a-human gives that loop a folder layout, a procedure, and a set of tests so it keeps working after the first week.
+## Before and after
+
+Here's an AI draft of a team update, and the version a person actually sent. Both ship with the repo as an eval case.
+
+The draft, 137 words:
+
+```text
+Hi team,
+
+I wanted to reach out with a quick update on where things stand this week. Let me be clear: overall, we're in a great place, and I'm proud of the holistic progress we've made across the board.
+
+Before we delve into the details, one important note — the mobile release is moving from Thursday to next Tuesday. We discovered a crash affecting older Android devices, and we want to make sure we deliver a high-quality experience for every user.
+
+In the meantime, I'd ask that everyone hold off on merging any changes that aren't directly related to the fix. This will help us maintain stability and ensure a smooth path to release. Getting this right will be a game-changer for our ratings.
+
+Everything else remains on track. Thanks, as always, for your hard work and dedication!
+```
+
+What the human sent, 45 words:
+
+```text
+Hi team,
+
+The mobile release moves from Thursday to Tuesday. We found a crash on older Android phones and the fix needs two days of testing.
+
+Until it ships, please only merge changes that are part of the fix.
+
+Everything else is on track. Thanks.
+```
+
+`wlah lint` flags six errors in the draft (a throat-clearing opener, meta-commentary, three pieces of AI vocabulary, and an em-dash) and zero in the final. `wlah diff` shows the person cut two thirds of the words and seven of ten sentences. Those cuts are what the loop learns from. Make the same cut twice and it becomes a rule, so the next draft arrives without it.
+
+## Why it works
+
+- **Your samples set the baseline.** Paste 3 to 10 things you wrote, and it measures how you actually write: sentence length, how you open, your punctuation, and the words you lean on.
+- **Your edits teach it.** One edit gets logged. The second time you make the same edit, it becomes a rule. A rule that still gets broken three times becomes a hard check in the linter.
+- **The checks are mechanical.** A regex doesn't forget your preferences halfway through a long conversation.
+- **Evals keep it honest.** Run them to see whether your rules still catch what you cut, and whether your own writing passes them.
+- **It never invents.** Names, numbers, and outcomes come from your material or stay out. When the material is thin, the draft gets shorter.
+
+## Where it came from
+
+I built the first version for myself, for cover letters, cold emails, and posts. Generic style prompts kept failing, so I started logging every correction I made to a Claude draft and turning the ones that repeated into rules. The rules that worked best all came from my own red pen, and none came from writing advice articles.
+
+write-like-a-human is the general version. It keeps the learning loop and the mechanical checks, with your writing as the ground truth. My rules stay mine, and your rules come from your edits.
+
+Andy Rosic
 
 ## Quickstart (60 seconds)
 
