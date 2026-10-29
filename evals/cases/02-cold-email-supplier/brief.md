@@ -1,0 +1,1 @@
+Cold email from the owner of a small fictional bakery, Rye & Rise, to a regional flour mill. The bakery wants to buy direct instead of through a distributor. They use about two tons a month. Ask for a short call.

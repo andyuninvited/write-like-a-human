@@ -1,0 +1,1 @@
+Weekly update to a small team. The mobile release slipped from Thursday to the following Tuesday because of a crash on older Android phones. Everything else is on track. Ask the team to stop merging non-fix changes until the release ships.
