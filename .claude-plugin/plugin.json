@@ -1,0 +1,10 @@
+{
+  "name": "write-like-a-human",
+  "version": "0.1.0",
+  "description": "Make AI write like you. Learns your writing style from your own edits, then checks the next draft before you see it.",
+  "author": { "name": "Andy Rosic", "url": "https://github.com/andyuninvited" },
+  "homepage": "https://github.com/andyuninvited/write-like-a-human",
+  "repository": "https://github.com/andyuninvited/write-like-a-human",
+  "license": "MIT",
+  "keywords": ["writing", "style", "ai-writing", "prose-lint", "editing"]
+}

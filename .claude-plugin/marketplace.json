@@ -1,0 +1,12 @@
+{
+  "name": "write-like-a-human",
+  "description": "Make AI write like you.",
+  "owner": { "name": "Andy Rosic", "url": "https://github.com/andyuninvited" },
+  "plugins": [
+    {
+      "name": "write-like-a-human",
+      "source": "./",
+      "description": "Learns your writing style from your own edits, then checks the next draft before you see it."
+    }
+  ]
+}
