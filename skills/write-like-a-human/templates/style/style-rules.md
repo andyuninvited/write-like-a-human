@@ -1,4 +1,4 @@
-# My Voice Rules
+# My Style Rules
 
 These rules belong to you. The skill fills this file in during `init` from your samples and your answers, then the learning loop adds to it from your edits. Every rule should trace to something you actually wrote or changed. Delete anything that stops being true.
 

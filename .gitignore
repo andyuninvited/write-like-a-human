@@ -6,6 +6,6 @@ coverage/
 .env
 .env.*
 
-# Your personal voice workspace stays local by default.
-# The shipped example lives in examples/voice/ and is tracked.
-/voice/
+# Your personal style workspace stays local by default.
+# The shipped example lives in examples/style/ and is tracked.
+/style/

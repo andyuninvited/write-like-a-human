@@ -28,7 +28,7 @@ describe("computeProfile", () => {
 
   it("renders a markdown profile", () => {
     const md = renderProfile(p, "2026-01-01");
-    expect(md).toContain("# Voice Profile");
+    expect(md).toContain("# Style Profile");
     expect(md).toContain("2026-01-01");
     expect(md).toContain("Oxford comma rate: 100%");
   });

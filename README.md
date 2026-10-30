@@ -71,7 +71,7 @@ Andy Rosic
 
 2. In Claude Code, say "set up write-like-a-human." Claude asks who you write to, what you write, and which words you hate, then asks you to paste 3 to 10 things you wrote yourself. It builds your workspace from those answers.
 
-3. Ask for a draft as usual ("write a cold email to..."). When you rewrite it, paste your version back or drop the pair into `voice/edits/`. That starts the loop.
+3. Ask for a draft as usual ("write a cold email to..."). When you rewrite it, paste your version back or drop the pair into `style/edits/`. That starts the loop.
 
 The CLI is optional. The skill works without it, and uses it when it is installed:
 
@@ -87,7 +87,7 @@ Node 20 or newer. No runtime dependencies.
 ## How the loop works
 
 ```
-  your samples ──► profile.md + voice-rules.md + rules.json
+  your samples ──► profile.md + style-rules.md + rules.json
                           │
                           ▼
    brief ──► Claude drafts to a format budget
@@ -123,18 +123,18 @@ Every few months the skill folds duplicate rules, cuts rules that never fire, an
 
 ## Your workspace
 
-`init` creates this, in `voice/` at a project root or in `~/.claude/voice/` for every project:
+`init` creates this, in `style/` at a project root or in `~/.claude/style/` for every project:
 
 | Path | What it holds |
 |---|---|
 | `samples/` | Your own writing. The ground truth. |
 | `edits/` | Inbox for `draft.md` and `final.md` pairs. Processed pairs move to `edits/done/`. |
-| `voice-rules.md` | Your rules: judgment calls a regex cannot make. |
+| `style-rules.md` | Your rules: judgment calls a regex cannot make. |
 | `rules.json` | Mechanical checks the linter enforces. |
 | `profile.md` | Measured fingerprint: sentence length, openers, punctuation, contractions, and recurring words. |
 | `feedback-log.md` | Every correction, dated, with the before and after. |
 
-`/voice/` is in `.gitignore`. Your samples and edits stay on your machine unless you choose to commit them.
+`/style/` is in `.gitignore`. Your samples and edits stay on your machine unless you choose to commit them.
 
 ## The CLI
 
@@ -143,10 +143,10 @@ Every few months the skill folds duplicate rules, cuts rules that never fire, an
 | `write-like-a-human init [dir]` | Scaffolds the workspace. Never overwrites existing files. |
 | `write-like-a-human lint <file...>` | Runs your `rules.json` checks. Exits 1 on any error. `--format cover-letter` or `--max-words 120` applies a word budget, and so does `format:` in the file's frontmatter. |
 | `write-like-a-human diff <draft> <final>` | Sentence-level diff: kept, changed, cut, and added sentences, word deltas, lard factor, and the lint rules your edit removed. |
-| `write-like-a-human profile` | Reads `voice/samples/` and writes `voice/profile.md`. |
+| `write-like-a-human profile` | Reads `style/samples/` and writes `style/profile.md`. |
 | `write-like-a-human eval` | Runs the eval suite and exits 1 if it misses the thresholds. |
 
-`wlah` is a short alias for every command. Every command takes `--voice <dir>`, `--config <file>`, and `--json`.
+`wlah` is a short alias for every command. Every command takes `--style <dir>`, `--config <file>`, and `--json`.
 
 ### Rules config
 
@@ -193,7 +193,7 @@ evals/cases/03-short-post-code-review/
 
 Run the shipped examples with `npm run eval`. Six invented cases ship with the repo, and one of them misses on purpose: the word "journey" is in a draft but missing from the starter list, so recall reads 0.97. Adding it to the `ai-vocabulary` rule is exactly the move the loop exists to prompt.
 
-To build your own suite, copy each processed pair from `voice/edits/` into a cases folder and run `write-like-a-human eval --cases <dir>`. See `evals/README.md`.
+To build your own suite, copy each processed pair from `style/edits/` into a cases folder and run `write-like-a-human eval --cases <dir>`. See `evals/README.md`.
 
 An optional LLM-judge mode is stubbed behind `--judge` and the `WLAH_JUDGE=1` environment variable. It is off by default and makes no network calls in this release.
 
@@ -203,11 +203,11 @@ An optional LLM-judge mode is stubbed behind `--judge` and the `WLAH_JUDGE=1` en
 skills/write-like-a-human/ the Claude Code skill, self-contained
   SKILL.md                 steps: load, draft, diagnose, gate, report, and the loop trigger
   references/              core rules, formats, diagnostics, learning loop, init interview
-  templates/voice/         what `init` copies into your workspace
+  templates/style/         what `init` copies into your workspace
 src/                       the CLI (TypeScript, no runtime dependencies)
 tests/                     vitest
 evals/cases/               invented example cases
-examples/voice/            an invented writer's samples and rules, used by the example evals
+examples/style/            an invented writer's samples and rules, used by the example evals
 ```
 
 The skill folder carries its own templates so it works when copied on its own. The CLI reads the same templates, so there is one source for the starter rules.
@@ -224,7 +224,7 @@ The skill folder carries its own templates so it works when copied on its own. T
 
 **Why are em-dashes banned by default?** Readers now treat a page full of them as a sign of machine writing. If you use them on purpose, turn the rule off.
 
-**Why not let the model learn my voice from samples alone?** Samples show what you write. Edits show what you refuse to send. The second signal is sharper, and it is the one most tools throw away.
+**Why not let the model learn my style from samples alone?** Samples show what you write. Edits show what you refuse to send. The second signal is sharper, and it is the one most tools throw away.
 
 ## License
 

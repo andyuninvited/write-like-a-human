@@ -68,7 +68,7 @@ describe("loadCases and runEval", () => {
   });
 
   it("passes on the shipped example cases", () => {
-    const { summary } = runEval("evals/cases", loadConfig("examples/voice/rules.json"), "examples/voice/samples", t);
+    const { summary } = runEval("evals/cases", loadConfig("examples/style/rules.json"), "examples/style/samples", t);
     expect(summary.cases).toBeGreaterThanOrEqual(5);
     expect(summary.passed).toBe(true);
   });

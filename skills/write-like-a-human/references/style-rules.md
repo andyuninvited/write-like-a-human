@@ -1,6 +1,6 @@
-# Core Voice Rules
+# Core Style Rules
 
-The universal starting point. The user's own `voice-rules.md` overrides anything here, and any mechanical rule can be switched off in their `rules.json` by adding its id to `disabled`. Their samples outrank this file.
+The universal starting point. The user's own `style-rules.md` overrides anything here, and any mechanical rule can be switched off in their `rules.json` by adding its id to `disabled`. Their samples outrank this file.
 
 ## The governing rule
 

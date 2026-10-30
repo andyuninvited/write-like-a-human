@@ -1,6 +1,6 @@
 ---
 name: write-like-a-human
-description: "Writes in the user's own voice and improves from their edits. Use whenever drafting or revising prose another person will read: cover letters, cold emails and DMs, application answers, posts, proposals, and client notes. Loads the user's voice rules, samples, and profile, drafts to a format budget, runs a five-check diagnostic pass for AI-flavored prose, and runs a learning loop when the user sends back an edited version, drops a draft and final pair into their edits inbox, or pushes back on a draft. Also handles first-time setup when the user asks to set up write-like-a-human or no voice workspace exists yet."
+description: "Writes in the user's own style and improves from their edits. Use whenever drafting or revising prose another person will read: cover letters, cold emails and DMs, application answers, posts, proposals, and client notes. Loads the user's style rules, samples, and profile, drafts to a format budget, runs a five-check diagnostic pass for AI-flavored prose, and runs a learning loop when the user sends back an edited version, drops a draft and final pair into their edits inbox, or pushes back on a draft. Also handles first-time setup when the user asks to set up write-like-a-human or no style workspace exists yet."
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep
 ---
 
@@ -12,14 +12,14 @@ One standard for everything the user sends to another human, built from their ow
 
 ## Find the workspace
 
-Look for the voice workspace in this order and use the first one that exists:
+Look for the style workspace in this order and use the first one that exists:
 
-1. `voice/` at the project root
-2. `~/.claude/voice/`
+1. `style/` at the project root
+2. `~/.claude/style/`
 
 If neither exists, run the init flow in `references/init.md` before drafting anything. A draft without the user's samples is a generic draft.
 
-The workspace holds `samples/` (their own writing, the ground truth), `edits/` (an inbox of draft and final pairs), `voice-rules.md` (their rules), `rules.json` (mechanical checks), `profile.md` (a measured fingerprint), and `feedback-log.md` (every correction, dated).
+The workspace holds `samples/` (their own writing, the ground truth), `edits/` (an inbox of draft and final pairs), `style-rules.md` (their rules), `rules.json` (mechanical checks), `profile.md` (a measured fingerprint), and `feedback-log.md` (every correction, dated).
 
 ## The one rule that governs the rest
 
@@ -31,8 +31,8 @@ An invented number that contradicts what the user has said elsewhere is a credib
 
 Read, in order:
 
-1. `references/voice-rules.md` for the universal core rules
-2. The user's `voice-rules.md`, which overrides the core wherever they disagree
+1. `references/style-rules.md` for the universal core rules
+2. The user's `style-rules.md`, which overrides the core wherever they disagree
 3. The user's `profile.md` and two or three files from `samples/` that match the format
 4. The format spec in `references/formats.md`, adjusted by any budget in the user's `rules.json`
 
@@ -59,7 +59,7 @@ If the `write-like-a-human` CLI is installed, also run `write-like-a-human lint 
 Do not return the draft until every box passes:
 
 - [ ] Every number and proper noun traces to a real source
-- [ ] No banned word or pattern from `rules.json` or the user's `voice-rules.md`
+- [ ] No banned word or pattern from `rules.json` or the user's `style-rules.md`
 - [ ] Inside the word budget for the format
 - [ ] Opens on information
 - [ ] Ends on a line that does new work
