@@ -84,9 +84,8 @@ Andy Rosic
 The CLI is optional. The skill works without it, and uses it when it is installed:
 
 ```sh
-cd write-like-a-human
-npm install        # also builds dist/
-npm link           # puts `write-like-a-human` and the short alias `wlah` on your PATH
+npx write-like-a-human lint draft.md     # run it once, no install
+npm install -g write-like-a-human        # or install it: puts `write-like-a-human` and the short alias `wlah` on your PATH
 wlah --help
 ```
 
