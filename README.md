@@ -60,14 +60,20 @@ Andy Rosic
 
 ## Quickstart (60 seconds)
 
-1. Clone the repo and copy the skill into Claude Code:
+1. Install the plugin from inside Claude Code:
 
-   ```sh
-   git clone https://github.com/andyuninvited/write-like-a-human.git
-   cp -r write-like-a-human/skills/write-like-a-human ~/.claude/skills/        # every project
-   # or
-   cp -r write-like-a-human/skills/write-like-a-human your-project/.claude/skills/   # one project
    ```
+   /plugin install write-like-a-human --marketplace andyuninvited/write-like-a-human
+   ```
+
+   On Claude Code older than 2.1.275, add the marketplace first:
+
+   ```
+   /plugin marketplace add andyuninvited/write-like-a-human
+   /plugin install write-like-a-human@write-like-a-human
+   ```
+
+   Prefer plain files? Clone the repo and copy `skills/write-like-a-human` into `~/.claude/skills/` (every project) or `your-project/.claude/skills/` (one project).
 
 2. In Claude Code, say "set up write-like-a-human." Claude asks who you write to, what you write, and which words you hate, then asks you to paste 3 to 10 things you wrote yourself. It builds your workspace from those answers.
 
