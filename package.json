@@ -4,6 +4,21 @@
   "description": "Make AI write in your style, and get better from your edits. Claude Code skill plus a small CLI.",
   "license": "MIT",
   "author": "Andy Rosic",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andyuninvited/write-like-a-human.git"
+  },
+  "homepage": "https://github.com/andyuninvited/write-like-a-human#readme",
+  "bugs": "https://github.com/andyuninvited/write-like-a-human/issues",
+  "keywords": [
+    "claude-code",
+    "claude-code-skill",
+    "ai-writing",
+    "writing-style",
+    "prose-lint",
+    "llm",
+    "editing"
+  ],
   "type": "module",
   "bin": {
     "write-like-a-human": "dist/cli.js",
