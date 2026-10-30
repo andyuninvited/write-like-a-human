@@ -1,5 +1,7 @@
 # write-like-a-human
 
+[![npm](https://img.shields.io/npm/v/write-like-a-human)](https://www.npmjs.com/package/write-like-a-human) [![downloads](https://img.shields.io/npm/dm/write-like-a-human)](https://www.npmjs.com/package/write-like-a-human) [![GitHub stars](https://img.shields.io/github/stars/andyuninvited/write-like-a-human?style=social)](https://github.com/andyuninvited/write-like-a-human)
+
 **Still fighting to get Claude to sound like a human? To sound like you?**
 
 Tired of `delve`, `game-changer`, and an em-dash in every other sentence? Of "this, not that" framing, three examples where one would do, and a closing paragraph that repeats the opening one? Of asking for a three-line email and getting four paragraphs that open with "I hope this finds you well"?
