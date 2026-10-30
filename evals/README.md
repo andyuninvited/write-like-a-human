@@ -18,7 +18,7 @@ An `expected` entry is a rule id (`"em-dash"`) or a rule id plus the term it sho
 ## Running
 
 ```sh
-write-like-a-human eval --cases evals/cases --voice examples/voice
+write-like-a-human eval --cases evals/cases --style examples/style
 write-like-a-human eval --cases my-cases --min-recall 0.9 --json
 ```
 
@@ -32,4 +32,4 @@ Exit code 0 means the suite passed, 1 means a threshold failed, and 2 means bad 
 
 ## Turning your edits into cases
 
-After the learning loop processes a pair in `voice/edits/`, copy the folder here (or to your own cases folder), add a `case.json` listing the tells you removed, and run the suite. Over time the cases become a regression test for your voice: when you change a rule, the suite tells you what it stopped catching.
+After the learning loop processes a pair in `style/edits/`, copy the folder here (or to your own cases folder), add a `case.json` listing the tells you removed, and run the suite. Over time the cases become a regression test for your style: when you change a rule, the suite tells you what it stopped catching.

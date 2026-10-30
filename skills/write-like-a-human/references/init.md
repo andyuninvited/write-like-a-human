@@ -4,10 +4,10 @@ Run this the first time, or when the user asks to set up write-like-a-human. It 
 
 ## 1. Pick the location
 
-Ask one question: should this voice apply to this project only, or everywhere?
+Ask one question: should this style apply to this project only, or everywhere?
 
-- This project only: `voice/` at the project root. Remind them it is gitignored by default if they cloned write-like-a-human, and that they should add `voice/` to their own `.gitignore` if the project is public.
-- Everywhere: `~/.claude/voice/`
+- This project only: `style/` at the project root. Remind them it is gitignored by default if they cloned write-like-a-human, and that they should add `style/` to their own `.gitignore` if the project is public.
+- Everywhere: `~/.claude/style/`
 
 ## 2. Scaffold
 
@@ -17,13 +17,13 @@ If the CLI is installed, run `write-like-a-human init <dir>`. Otherwise create t
 <dir>/
   samples/          their own writing, the ground truth
   edits/            inbox for draft and final pairs
-  voice-rules.md    their rules
+  style-rules.md    their rules
   rules.json        mechanical checks for the linter
   profile.md        measured fingerprint
   feedback-log.md   dated record of corrections
 ```
 
-Copy the files from `templates/voice/` in this skill directory. Never overwrite a file that already exists.
+Copy the files from `templates/style/` in this skill directory. Never overwrite a file that already exists.
 
 ## 3. Interview
 
@@ -38,8 +38,8 @@ Ask these one or two at a time, conversationally. Keep their answers in their wo
 ## 4. Write what you learned
 
 - Save each sample to `samples/` as its own `.md` file with a short descriptive name.
-- Run `write-like-a-human profile --voice <dir>` to write `profile.md`. Without the CLI, read the samples and write the same sections by hand: sentence length range, how sentences open, punctuation habits, contractions, and recurring words.
-- Fill in `voice-rules.md`: audience, formats, words they hate (also add them to the `ai-vocabulary` rule or a new `words` rule in `rules.json`), and habits from question 5.
+- Run `write-like-a-human profile --style <dir>` to write `profile.md`. Without the CLI, read the samples and write the same sections by hand: sentence length range, how sentences open, punctuation habits, contractions, and recurring words.
+- Fill in `style-rules.md`: audience, formats, words they hate (also add them to the `ai-vocabulary` rule or a new `words` rule in `rules.json`), and habits from question 5.
 - Turn off any starter rule their samples break on purpose. If they use em-dashes well and often, add `"em-dash"` to `disabled` in `rules.json`. Their writing outranks the starter list.
 - Set word budgets in `rules.json` `formats` for the formats they named.
 

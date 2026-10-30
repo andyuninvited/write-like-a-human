@@ -36,7 +36,7 @@ export type Config = {
 };
 
 export const TEMPLATES_DIR = fileURLToPath(new URL("../../skills/write-like-a-human/templates", import.meta.url));
-export const DEFAULT_CONFIG_PATH = join(TEMPLATES_DIR, "voice", "rules.json");
+export const DEFAULT_CONFIG_PATH = join(TEMPLATES_DIR, "style", "rules.json");
 
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
 
@@ -96,9 +96,9 @@ export const parseConfig = (path: string, json: unknown): Config => {
 
 export const loadConfig = (path: string): Config => parseConfig(path, JSON.parse(readFileSync(path, "utf8")) as unknown);
 
-// Explicit path wins, then <voiceDir>/rules.json, then the shipped defaults.
-export const resolveConfig = (explicit: string | undefined, voiceDir = "voice"): Config => {
+// Explicit path wins, then <styleDir>/rules.json, then the shipped defaults.
+export const resolveConfig = (explicit: string | undefined, styleDir = "style"): Config => {
   if (explicit) return loadConfig(explicit);
-  const local = join(voiceDir, "rules.json");
+  const local = join(styleDir, "rules.json");
   return loadConfig(existsSync(local) ? local : DEFAULT_CONFIG_PATH);
 };

@@ -6,7 +6,7 @@
 
 **Key Files**:
 - `skills/write-like-a-human/SKILL.md` - the skill: find workspace, load, draft, diagnose, gate, report, and the learning-loop trigger
-- `skills/write-like-a-human/templates/voice/rules.json` - starter mechanical rules, single source for `init` and the lint fallback
+- `skills/write-like-a-human/templates/style/rules.json` - starter mechanical rules, single source for `init` and the lint fallback
 - `src/lib/lint.ts` - rule engine: words and regex rules, triplet heuristic, word budgets, code masking
 - `src/lib/diff.ts` - sentence-level diff (LCS anchors plus Dice-similarity pairing) for the learning loop
 - `src/lib/eval.ts` - deterministic eval: ban recall, clean finals, lard factor, profile distance
@@ -28,7 +28,7 @@
 ## Session Archive
 
 ### 2026-10-29 - Initial build
-Extracted principles and mechanisms from a private writing skill into a generic, privacy-clean version. Built the skill (SKILL.md plus five references), workspace templates, a TypeScript CLI (init, lint, diff, profile, eval), 53 vitest tests, six invented eval cases, and an invented example voice. Eval surfaced a real gap: `meta-commentary` missed "The real problem was," so the rule now accepts "is" or "was."
+Extracted principles and mechanisms from a private writing skill into a generic, privacy-clean version. Built the skill (SKILL.md plus five references), workspace templates, a TypeScript CLI (init, lint, diff, profile, eval), 53 vitest tests, six invented eval cases, and an invented example style. Eval surfaced a real gap: `meta-commentary` missed "The real problem was," so the rule now accepts "is" or "was."
 
 ## Milestones
 

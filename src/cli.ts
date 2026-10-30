@@ -9,15 +9,15 @@ import { initWorkspace } from "./lib/init.js";
 import { formatLint, lint } from "./lib/lint.js";
 import { computeProfile, readSamples, renderProfile } from "./lib/profile.js";
 
-const HELP = `write-like-a-human: make AI write in your voice, and learn from your edits.
+const HELP = `write-like-a-human: make AI write in your style, and learn from your edits.
 
 Usage:
-  write-like-a-human init [dir]                 Scaffold a voice workspace (default ./voice)
+  write-like-a-human init [dir]                 Scaffold a style workspace (default ./style)
   write-like-a-human lint <file...>             Mechanical checks from your rules
       --format <name>                   Apply a word budget from rules.json formats
       --max-words <n>                   Explicit word ceiling
   write-like-a-human diff <draft> <final>       Sentence-level diff for the learning loop
-  write-like-a-human profile                    Compute a fingerprint from voice/samples into voice/profile.md
+  write-like-a-human profile                    Compute a fingerprint from style/samples into style/profile.md
   write-like-a-human eval                       Run the eval suite
       --cases <dir>                     Case folders (default evals/cases)
       --min-recall <0-1>                Fail below this ban recall (default 0.8)
@@ -27,8 +27,8 @@ Usage:
 Alias: wlah <command> works the same.
 
 Shared flags:
-  --voice <dir>     Voice workspace (default ./voice)
-  --config <file>   Rules file (default <voice>/rules.json, then built-in defaults)
+  --style <dir>     Style workspace (default ./style)
+  --config <file>   Rules file (default <style>/rules.json, then built-in defaults)
   --json            Machine-readable output
   -h, --help        Show this help
 `;
@@ -38,7 +38,7 @@ const { values, positionals } = parseArgs({
   options: {
     format: { type: "string" },
     "max-words": { type: "string" },
-    voice: { type: "string", default: "voice" },
+    style: { type: "string", default: "style" },
     config: { type: "string" },
     cases: { type: "string", default: join("evals", "cases") },
     "min-recall": { type: "string", default: "0.8" },
@@ -62,12 +62,12 @@ const num = (flag: string, raw: string | undefined): number | undefined => {
 
 const commands: Record<string, (args: string[]) => number> = {
   init: ([dir]) => {
-    const target = dir ?? values.voice ?? "voice";
+    const target = dir ?? values.style ?? "style";
     const { created, skipped } = initWorkspace(target);
     out(
       { target, created, skipped },
       [
-        `Voice workspace at ${target}/`,
+        `Style workspace at ${target}/`,
         ...created.map((f) => `  created ${f}`),
         ...skipped.map((f) => `  kept existing ${f}`),
         "",
@@ -79,7 +79,7 @@ const commands: Record<string, (args: string[]) => number> = {
 
   lint: (files) => {
     if (!files.length) throw new Error("lint needs at least one file");
-    const config = resolveConfig(values.config, values.voice);
+    const config = resolveConfig(values.config, values.style);
     const opts = { format: values.format, maxWords: num("max-words", values["max-words"]) };
     const results = files.map((file) => ({ file, ...lint(readFileSync(file, "utf8"), config, opts) }));
     out(results, results.map((r) => formatLint(r.file, r)).join("\n\n"));
@@ -88,17 +88,17 @@ const commands: Record<string, (args: string[]) => number> = {
 
   diff: ([draft, final]) => {
     if (!draft || !final) throw new Error("diff needs <draft> <final>");
-    const report = diffReport(readFileSync(draft, "utf8"), readFileSync(final, "utf8"), resolveConfig(values.config, values.voice));
+    const report = diffReport(readFileSync(draft, "utf8"), readFileSync(final, "utf8"), resolveConfig(values.config, values.style));
     out(report, formatDiff(report));
     return 0;
   },
 
   profile: () => {
-    const voice = values.voice ?? "voice";
-    const samples = readSamples(join(voice, "samples"));
-    if (!samples.length) throw new Error(`No .md or .txt samples in ${join(voice, "samples")}. Add some of your own writing first.`);
+    const style = values.style ?? "style";
+    const samples = readSamples(join(style, "samples"));
+    if (!samples.length) throw new Error(`No .md or .txt samples in ${join(style, "samples")}. Add some of your own writing first.`);
     const profile = computeProfile(samples);
-    const path = join(voice, "profile.md");
+    const path = join(style, "profile.md");
     writeFileSync(path, renderProfile(profile, new Date().toISOString().slice(0, 10)));
     out(profile, `Wrote ${path} from ${profile.samples} sample(s): avg sentence ${profile.avgSentence} words, ${profile.words} words total.`);
     return 0;
@@ -110,8 +110,8 @@ const commands: Record<string, (args: string[]) => number> = {
       throw new Error("The LLM judge is a stub in this release. Deterministic metrics only.");
     }
     const t = { minRecall: num("min-recall", values["min-recall"]) ?? 0.8, minFinalClean: num("min-final-clean", values["min-final-clean"]) ?? 1 };
-    const voice = values.voice ?? "voice";
-    const { results, summary } = runEval(values.cases ?? join("evals", "cases"), resolveConfig(values.config, voice), join(voice, "samples"), t);
+    const style = values.style ?? "style";
+    const { results, summary } = runEval(values.cases ?? join("evals", "cases"), resolveConfig(values.config, style), join(style, "samples"), t);
     out({ results, summary }, formatEval(results, summary, t));
     return summary.passed ? 0 : 1;
   },

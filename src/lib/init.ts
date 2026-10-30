@@ -10,7 +10,7 @@ const walk = (dir: string): string[] =>
 
 // Copies the template workspace into `target` without overwriting anything already there.
 export const initWorkspace = (target: string): { created: string[]; skipped: string[] } => {
-  const source = join(TEMPLATES_DIR, "voice");
+  const source = join(TEMPLATES_DIR, "style");
   const files = walk(source).map((src) => ({ src, rel: relative(source, src) }));
   const created: string[] = [];
   const skipped: string[] = [];

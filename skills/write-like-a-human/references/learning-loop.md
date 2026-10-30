@@ -37,11 +37,11 @@ Run the loop when any of these happen. Do not wait to be asked.
 - EVIDENCE: the before and the after, one line each
 ```
 
-**6. Promote on the second occurrence.** Add the rule to the user's `voice-rules.md` (judgment calls) or `rules.json` (anything a regex or word list can catch). Keep the example and the date. Rules with a real example attached get followed.
+**6. Promote on the second occurrence.** Add the rule to the user's `style-rules.md` (judgment calls) or `rules.json` (anything a regex or word list can catch). Keep the example and the date. Rules with a real example attached get followed.
 
 **7. Convert repeat offenders to checks.** A rule violated three times needs a literal search in `rules.json`, not a third restatement.
 
-**8. Retire, never delete.** When a rule stops being true, move it to the Superseded section of `voice-rules.md` with the date and what replaced it. The history explains why the current rule exists.
+**8. Retire, never delete.** When a rule stops being true, move it to the Superseded section of `style-rules.md` with the date and what replaced it. The history explains why the current rule exists.
 
 **9. Close the inbox.** Move processed pairs to `edits/done/`. A processed pair also makes a good eval case; see the repo's `evals/README.md`.
 

@@ -1,7 +1,7 @@
 {
   "name": "write-like-a-human",
   "version": "0.1.0",
-  "description": "Make AI write in your voice, and get better from your edits. Claude Code skill plus a small CLI.",
+  "description": "Make AI write in your style, and get better from your edits. Claude Code skill plus a small CLI.",
   "license": "MIT",
   "author": "Andy Rosic",
   "type": "module",
@@ -22,8 +22,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "eval": "node dist/cli.js eval --voice examples/voice --cases evals/cases",
-    "lint:prose": "node dist/cli.js lint README.md CLAUDE.md evals/README.md --config examples/voice/rules.json"
+    "eval": "node dist/cli.js eval --style examples/style --cases evals/cases",
+    "lint:prose": "node dist/cli.js lint README.md CLAUDE.md evals/README.md --config examples/style/rules.json"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
