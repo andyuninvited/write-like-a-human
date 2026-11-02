@@ -1,8 +1,17 @@
 {
   "name": "write-like-a-human",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Make AI write in your style, and get better from your edits. Claude Code skill plus a small CLI.",
   "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "author": "Andy Rosic",
   "repository": {
     "type": "git",

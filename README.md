@@ -175,6 +175,25 @@ A `words` entry also catches common inflections, so `leverage` flags `leveraged`
 
 The starter rules cover the usual AI tells: em-dashes, generic vocabulary (`leverage`, `robust`, `seamless`), contrastive scaffolding, throat-clearing openers, meta-commentary, restating closers, empty intensifiers, and reflexive three-item lists. They are a starting point. If your samples use em-dashes well, add `"em-dash"` to `disabled`. Your writing outranks the starter list.
 
+## Use it from code
+
+The CLI's checks are also exported from the package, so another tool can run the same rules without spawning the CLI. Install it with `npm install write-like-a-human`, then:
+
+```ts
+import { lint, resolveConfig } from "write-like-a-human";
+
+const draft = "We leveraged the data to delve into churn.";
+const config = resolveConfig(undefined);
+const { violations, errors } = lint(draft, config);
+
+for (const v of violations) {
+  console.log(`${v.line}:${v.col}  ${v.severity}  ${v.rule}  ${v.message}`);
+}
+console.log(`${errors} error(s)`);
+```
+
+`resolveConfig` reads `style/rules.json` when it exists and falls back to the shipped starter rules. The package also exports `loadConfig`, `parseConfig`, `DEFAULT_CONFIG_PATH`, `diffReport`, `diffSentences`, `formatDiff`, `computeProfile`, `readSamples`, `renderProfile`, `sentenceDistance`, and the types behind them.
+
 ## Evals
 
 The eval suite answers one question: do your rules catch what you actually cut?
